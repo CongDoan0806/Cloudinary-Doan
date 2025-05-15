@@ -1,66 +1,276 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Usage
+Upload a file (Image, Video or any type of File) to Cloudinary:
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+/**
+*  Using the Cloudinary Facade
+*/
 
-## About Laravel
+// Upload an Image File to Cloudinary with One line of Code
+$uploadedFileUrl = Cloudinary::upload($request->file('file')->getRealPath())->getSecurePath();
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+// Upload a Video File to Cloudinary with One line of Code
+$uploadedFileUrl = Cloudinary::uploadVideo($request->file('file')->getRealPath())->getSecurePath();
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+// Upload any File to Cloudinary with One line of Code
+$uploadedFileUrl = Cloudinary::uploadFile($request->file('file')->getRealPath())->getSecurePath();
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+/**
+ *  This package also exposes a helper function you can use if you are not a fan of Facades
+ *  Shorter, expressive, fluent using the
+ *  cloudinary() function
+ */
 
-## Learning Laravel
+// Upload an Image File to Cloudinary with One line of Code
+$uploadedFileUrl = cloudinary()->upload($request->file('file')->getRealPath())->getSecurePath();
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+// Upload a Video File to Cloudinary with One line of Code
+$uploadedFileUrl = cloudinary()->uploadVideo($request->file('file')->getRealPath())->getSecurePath();
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+// Upload any File to Cloudinary with One line of Code
+$uploadedFileUrl = cloudinary()->uploadFile($request->file('file')->getRealPath())->getSecurePath();
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-## Laravel Sponsors
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+/**
+ *  You can also skip the Cloudinary Facade or helper method and laravel-ize your uploads by simply calling the
+ *  storeOnCloudinary() method on the file itself
+ */
 
-### Premium Partners
+// Store the uploaded file in the "lambogini" directory on Cloudinary
+$result = $request->file('image')->store('lambogini', 'cloudinary');
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+// Store the uploaded file on Cloudinary
+$result = $request->file('file')->storeOnCloudinary();
 
-## Contributing
+// Store the uploaded file on Cloudinary
+$result = $request->file->storeOnCloudinary();
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+// Store the uploaded file in the "lambogini" directory on Cloudinary
+$result = $request->file->storeOnCloudinary('lambogini');
 
-## Code of Conduct
+// Store the uploaded file in the "lambogini" directory on Cloudinary with the filename "prosper"
+$result = $request->file->storeOnCloudinaryAs('lambogini', 'prosper');
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-## Security Vulnerabilities
+$result->getPath(); // Get the url of the uploaded file; http
+$result->getSecurePath(); // Get the url of the uploaded file; https
+$result->getSize(); // Get the size of the uploaded file in bytes
+$result->getReadableSize(); // Get the size of the uploaded file in bytes, megabytes, gigabytes or terabytes. E.g 1.8 MB
+$result->getFileType(); // Get the type of the uploaded file
+$result->getFileName(); // Get the file name of the uploaded file
+$result->getOriginalFileName(); // Get the file name of the file before it was uploaded to Cloudinary
+$result->getPublicId(); // Get the public_id of the uploaded file
+$result->getExtension(); // Get the extension of the uploaded file
+$result->getWidth(); // Get the width of the uploaded file
+$result->getHeight(); // Get the height of the uploaded file
+$result->getTimeUploaded(); // Get the time the file was uploaded
+Attach Files to Laravel Eloquent Models:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+First, import the Unicodeveloper\Cloudinary\MediaAlly trait into your Model like so:
 
-## License
+<?php
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+use Unicodeveloper\Cloudinary\MediaAlly;
+
+class Page extends Model
+{
+    use MediaAlly;
+
+    ...
+}
+Next, publish the package's migration file using this command:
+
+php artisan vendor:publish --provider="Unicodeveloper\Cloudinary\CloudinaryServiceProvider" --tag="laravel-cloudinary-migration"
+Note: Once this has been published, run php artisan migrate to create the required table in your DB.
+
+You can now attach media assets to your model like so:
+
+/**
+ *  How to attach a file to a Model by model creation
+ */
+$page = Page::create($this->request->input());
+$page->attachMedia($file);   // Example of $file is $request->file('file');
+
+/**
+ *  How to attach an existing remote file to a Model by model creation
+ */
+$page = Page::create($this->request->input());
+$page->attachRemoteMedia($remoteFileUrl);   // Example of $remoteFileUrl is https://miro.medium.com/max/4096/1*V1TmCz1GeAQ4T7EWRTWebA.jpeg
+
+/**
+ *  How to attach a file to a Model by retreiving model records
+ */
+$page = Page::find(2);
+$page->attachMedia($file);  // Example of $file is $request->file('file');
+
+/**
+ *  How to attach a remote file to a Model by retreiving model records
+ */
+$page = Page::find(2);
+$page->attachRemoteMedia($remoteFileUrl);  // Example of $remoteFileUrl is https://miro.medium.com/max/4096/1*V1TmCz1GeAQ4T7EWRTWebA.jpeg
+
+/**
+ *  How to retrieve files that were attached to a Model
+ */
+$filesBelongingToSecondPage = Page::find(2)->fetchAllMedia();
+
+/**
+ *  How to retrieve the first file that was attached to a Model
+ */
+$fileBelongingToSecondPage = Page::find(2)->fetchFirstMedia();
+
+/**
+ *  How to retrieve the last file that was attached to a Model
+ */
+$fileBelongingToSecondPage = Page::find(2)->fetchLastMedia();
+
+/**
+ *  How to replace/update files attached to a Model
+ */
+$page = Page::find(2);
+$page->updateMedia($file);  // Example of $file is $request->file('file');
+
+/**
+*  How to detach a file from a Model
+*/
+$page = Page::find(2);
+$page->detachMedia($file)  // Example of $file is $request->file('file');
+Upload Files Via An Upload Widget:
+
+Use the x-cld-upload-button Blade upload button component that ships with this Package like so:
+
+<!DOCTYPE html>
+<html>
+    <head>
+        ...
+        @cloudinaryJS
+    </head>
+    <body>
+        <x-cld-upload-button>
+            Upload Files
+        </x-cld-upload-button>
+    </body>
+</html>
+Other Blade components you can use are:
+
+<x-cld-image public-id="prosper" width="300" height="300"></x-cld-image> // Blade Image Component for displaying images
+
+<x-cld-video public-id="awesome"></x-cld-video> // Blade Video Component for displaying videos
+Media Management via The Command Line:
+
+/**
+*  Back up Files on Cloudinary
+*/
+php artisan cloudinary:backup
+
+/**
+ *  Delete a File on Cloudinary
+ */
+php artisan cloudinary:delete
+
+/**
+ * Fetch a File from Cloudinary
+ */
+php artisan cloudinary:fetch
+
+/**
+ * Rename a File from Cloudinary
+ */
+php artisan cloudinary:rename
+
+/**
+ * Upload a File to Cloudinary
+ */
+php artisan cloudinary:upload
+
+/**
+ * Generate an archive of a group of files and get the zipped downloadable url
+ */
+php artisan cloudinary:archive
+Installation
+PHP 7.0+, and Composer are required.
+
+To get the latest version of Laravel Cloudinary, simply require it:
+
+composer require unicodeveloper/laravel-cloudinary
+Or add the following line to the require block of your composer.json file.
+
+"unicodeveloper/laravel-cloudinary": "1.0.0-beta"
+You'll then need to run composer install or composer update to download it and have the autoloader updated.
+
+Once Laravel Cloudinary is installed, you need to register the service provider. Open up config/app.php and add the following to the providers key.
+
+'providers' => [
+    ...
+    Unicodeveloper\Cloudinary\CloudinaryServiceProvider::class,
+    ...
+]
+Note: If you use Laravel >= 5.5 you can skip this step (adding the code above to the providers key) and go to configuration
+
+Also, register the Cloudinary Facade like so:
+
+'aliases' => [
+    ...
+    'Cloudinary' => Unicodeveloper\Cloudinary\Facades\Cloudinary::class,
+    ...
+]
+Configuration
+You can publish the configuration file using this command:
+
+php artisan vendor:publish --provider="Unicodeveloper\Cloudinary\CloudinaryServiceProvider" --tag="laravel-cloudinary-config"
+A configuration-file named cloudinary.php with some sensible defaults will be placed in your config directory:
+
+<?php
+return [
+     /*
+    |--------------------------------------------------------------------------
+    | Cloudinary Configuration
+    |--------------------------------------------------------------------------
+    |
+    | An HTTP or HTTPS URL to notify your application (a webhook) when the process of uploads, deletes, and any API
+    | that accepts notification_url has completed.
+    |
+    |
+    */
+    'notification_url' => env('CLOUDINARY_NOTIFICATION_URL'),
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Cloudinary Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Here you may configure your Cloudinary settings. Cloudinary is a cloud hosted
+    | media management service for all file uploads, storage, delivery and transformation needs.
+    |
+    |
+    */
+    'cloud_url' => env('CLOUDINARY_URL'),
+
+    /**
+    * Upload Preset From Cloudinary Dashboard
+    *
+    */
+    'upload_preset' => env('CLOUDINARY_UPLOAD_PRESET')
+];
+API Keys
+Open your .env file and add your API Environment variable, upload_preset (this is optional, until you need to use the widget) like so:
+
+CLOUDINARY_URL=xxxxxxxxxxxxx
+CLOUDINARY_UPLOAD_PRESET=xxxxxxxxxxxxx
+CLOUDINARY_NOTIFICATION_URL=
+Note: You need to get these credentials from your Cloudinary Dashboard
+
+If you are using a hosting service like heroku,forge,digital ocean, etc, please ensure to add the above details to your configuration variables.
+
+Cloudinary JS
+Cloudinary relies on its own JavaScript library to initiate the Cloudinary Upload Widget. You can load the JavaScript library by placing the @cloudinaryJS directive right before your application layout's closing tag:
+
+<head>
+    ...
+
+    @cloudinaryJS
+</head>
