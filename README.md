@@ -6,7 +6,8 @@
    
     Or add the following line to the require block of your composer.json file.
     
-    <pre lang="markdown"> ```bash "unicodeveloper/laravel-cloudinary": "1.0.0-beta" ``` </pre>
+   "unicodeveloper/laravel-cloudinary": "1.0.0-beta"
+
     
 
 ## Configuration
