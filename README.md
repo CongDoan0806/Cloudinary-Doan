@@ -1,7 +1,9 @@
 # Cách sử dụng
 ## install cloudinary
-    ```bash  
+    ```
+    
     composer require cloudinary-labs/cloudinary-laravel 
+    
     ```
    
     Or add the following line to the require block of your composer.json file.
@@ -15,9 +17,12 @@
     <pre lang="markdown"> ```bash  ``` </pre>
 ## API Keys
     <pre lang="markdown"> ```bash 
+    
     CLOUDINARY_URL=xxxxxxxxxxxxx
     CLOUDINARY_UPLOAD_PRESET=xxxxxxxxxxxxx
-    CLOUDINARY_NOTIFICATION_URL= ``` </pre>
+    CLOUDINARY_NOTIFICATION_URL= 
+    
+    ``` </pre>
 
     ### Các bước lấy API Keys
     **B1** chọn setting
