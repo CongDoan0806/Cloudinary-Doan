@@ -1,7 +1,8 @@
 # Cách sử dụng
 ## install cloudinary
     ```bash  
-    composer require cloudinary-labs/cloudinary-laravel ```
+    composer require cloudinary-labs/cloudinary-laravel 
+    ```
    
     Or add the following line to the require block of your composer.json file.
     
